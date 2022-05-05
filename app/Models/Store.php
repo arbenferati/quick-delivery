@@ -29,4 +29,9 @@ class Store extends Model
             'user_id' => $user_id,
         ]);
     }
+
+    public function destroyStore()
+    {
+        $this->forceDelete();
+    }
 }
