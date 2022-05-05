@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Commandes en cours') }}</div>
+                <div class="card-header">{{ __('Liste des derniers inscrits') }}</div>
 
                 <div class="card-body">
 
@@ -20,23 +20,27 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($users as $user)
                             <tr>
-                                <td scope="row">101</td>
-                                <td>John Doe <small>(john@doe.com)</small></td>
-                                <td><span class="badge rounded-pill bg-warning">En attente de confirmation</span></td>
+                                <td scope="row">{{ $user->id }}</td>
+                                <td>{{ $user->name }} <small>({{ $user->email }})</small></td>
+                                <td>
+                                @if($user->userValidated())
+                                    <span class="badge rounded-pill bg-success">Confirmé</span>
+                                @else
+                                    <span class="badge rounded-pill bg-warning">En attente de confirmation</span>
+                                @endif
+                                </td>
                                 <td style="text-align: right">
-                                    <a name="confirm-btn" id="confirm-btn" class="btn btn-success" href="" role="button">Confirmer</a>
-                                    <a name="cancel-btn" id="cancel-btn" class="btn btn-danger" href="" role="button">Refuser</a>
+                                @if($user->userValidated())
+                                    <button name="delete-btn" id="delete-btn" class="btn btn-danger" role="button">Supprimer</button>
+                                @else
+                                    <button name="confirm-btn" id="confirm-btn" class="btn btn-success" role="button">Confirmer</button>
+                                    <button name="cancel-btn" id="cancel-btn" class="btn btn-danger" role="button">Refuser</button>
+                                @endif
                                 </td>
                             </tr>
-                            <tr>
-                                <td scope="row">100</td>
-                                <td>Johnny Depp <small>(johnny@depp.com)</small></td>
-                                <td><span class="badge rounded-pill bg-success">Confirmé</span></td>
-                                <td style="text-align: right">
-                                    <a name="delete-btn" id="delete-btn" class="btn btn-danger" href="" role="button">Supprimer</a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
