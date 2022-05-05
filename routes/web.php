@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +18,8 @@ use App\Http\Controllers\HomeController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+
+Route::get('/delete-user-{id}', [UserController::class, 'deleteUser'])->name('delete-user');
+Route::get('/enable-user-{id}', [UserController::class, 'enableUser'])->name('enable-user');
+Route::get('/disable-user-{id}', [UserController::class, 'disableUser'])->name('disable-user');
