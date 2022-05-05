@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this::select()->orderBy('validated_at', 'ASC')->get();
     }
 
+    public function getUser($id)
+    {
+        return $this::findOrFail($id);
+    }
+
     public function createUser(array $data)
     {
         return $this::create([
@@ -77,12 +82,26 @@ class User extends Authenticatable
         ]);
     }
 
+    public function unvalidateUser()
+    {
+        $this->update([
+            'validated_at' => NULL
+        ]);
+    }
+
     /**
      * Will destroy a user and his store
      */
     public function destroyUser()
     {
+        $store = $this->store;
+        $store->destroyStore();
+        $role = new Role();
+        $roles = $this->roles;
 
+        $role->retractUserFromRoles($this, $roles);
+
+        $this->forceDelete();
     }
 
     /**
@@ -112,6 +131,6 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_has_role', 'user_id', 'id');
+        return $this->belongsToMany(Role::class, 'user_has_role');
     }
 }
