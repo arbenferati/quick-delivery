@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,13 @@ class HomeController extends Controller
             $user = new User();
             $users = $user->getAllUsers();
 
-            return view('admin.home', compact('users'));
+            $role = new Role();
+            $roles = $role->getAllRoles();
+
+            $permission = new Permission();
+            $permissions = $permission->getAllPermissions();
+
+            return view('admin.home', compact('users', 'roles', 'permissions'));
         }
         return view('home');
     }
