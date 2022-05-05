@@ -22,7 +22,7 @@ class Role extends Model
      */
     public function getAllRoles()
     {
-
+        return $this::all();
     }
 
     /**
@@ -32,7 +32,7 @@ class Role extends Model
      */
     public function getRole($id)
     {
-
+        return $this::findOrFail($id);
     }
 
     /**
@@ -41,7 +41,7 @@ class Role extends Model
      */
     public function assignToRole(Permission $permission)
     {
-
+        $permission->roles->attach($this->id);
     }
 
 
@@ -51,7 +51,7 @@ class Role extends Model
      */
     public function retractFromRole(Permission $permission)
     {
-
+        $permission->roles->detach($this->id);
     }
 
 
@@ -62,7 +62,9 @@ class Role extends Model
      */
     public function createRole(array $data)
     {
-
+        return $this->create([
+            'name' => $data['name']
+        ]);
     }
 
     /**
@@ -70,7 +72,15 @@ class Role extends Model
      */
     public function destroyRole()
     {
+        $permissions = $this->permisssions;
 
+        if ($permissions->count() > 0) {
+            foreach ($permissions as $permission) {
+                $this->retractFromRole($permission);
+            }
+        }
+
+        $this->forceDelete();
     }
 
     /**
@@ -88,9 +98,13 @@ class Role extends Model
      */
     public function permisssions()
     {
-
+        return $this->belongsToMany(Permission::class, 'role_has_permission', 'role_id', 'id');
     }
 
+    /**
+     * Will fetch users in relation with the role
+     * @return ?
+     */
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_has_role', 'role_id', 'id');
