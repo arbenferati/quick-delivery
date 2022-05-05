@@ -21,25 +21,27 @@
                         </thead>
                         <tbody>
                             @foreach($users as $user)
-                            <tr>
-                                <td scope="row">{{ $user->id }}</td>
-                                <td>{{ $user->name }} <small>({{ $user->email }})</small></td>
-                                <td>
-                                @if($user->userValidated())
-                                    <span class="badge rounded-pill bg-success">Confirmé</span>
-                                @else
-                                    <span class="badge rounded-pill bg-warning">En attente de confirmation</span>
+                                @if ($user->id !== auth()->user()->id)
+                                <tr>
+                                    <td scope="row">{{ $user->id }}</td>
+                                    <td>{{ $user->name }} <small>({{ $user->email }})</small></td>
+                                    <td>
+                                    @if($user->userValidated())
+                                        <span class="badge rounded-pill bg-success">Confirmé</span>
+                                    @else
+                                        <span class="badge rounded-pill bg-warning">En attente de confirmation</span>
+                                    @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                    @if($user->userValidated())
+                                        <button name="delete-btn" id="delete-btn" class="btn btn-danger" role="button">Supprimer</button>
+                                    @else
+                                        <button name="confirm-btn" id="confirm-btn" class="btn btn-success" role="button">Confirmer</button>
+                                        <button name="cancel-btn" id="cancel-btn" class="btn btn-danger" role="button">Refuser</button>
+                                    @endif
+                                    </td>
+                                </tr>
                                 @endif
-                                </td>
-                                <td style="text-align: right">
-                                @if($user->userValidated())
-                                    <button name="delete-btn" id="delete-btn" class="btn btn-danger" role="button">Supprimer</button>
-                                @else
-                                    <button name="confirm-btn" id="confirm-btn" class="btn btn-success" role="button">Confirmer</button>
-                                    <button name="cancel-btn" id="cancel-btn" class="btn btn-danger" role="button">Refuser</button>
-                                @endif
-                                </td>
-                            </tr>
                             @endforeach
                         </tbody>
                     </table>
