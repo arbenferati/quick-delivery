@@ -34,10 +34,10 @@
                                     </td>
                                     <td style="text-align: right">
                                     @if($user->userValidated())
-                                        <button name="delete-btn" id="delete-btn" class="btn btn-danger" role="button">Supprimer</button>
+                                        <button name="delete-btn" id="delete-btn" class="btn btn-danger btn-sm" role="button">Supprimer</button>
                                     @else
-                                        <button name="confirm-btn" id="confirm-btn" class="btn btn-success" role="button">Confirmer</button>
-                                        <button name="cancel-btn" id="cancel-btn" class="btn btn-danger" role="button">Refuser</button>
+                                        <button name="confirm-btn" id="confirm-btn" class="btn btn-primary btn-sm" role="button">Confirmer</button>
+                                        <button name="cancel-btn" id="cancel-btn" class="btn btn-danger btn-sm" role="button">Refuser</button>
                                     @endif
                                     </td>
                                 </tr>
@@ -65,54 +65,49 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($roles as $role)
                             <tr>
-                                <td scope="row">Vendeur</td>
+                                <td scope="row">{{ $role->name }}</td>
                                 <td style="text-align: right">
-                                    <a name="confirm-btn" id="confirm-btn" class="btn btn-primary" href="" role="button">Modifier</a>
+                                    <button name="confirm-btn" id="confirm-btn" class="btn btn-primary btn-sm" role="button">Modifier</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td scope="row">Admin</td>
-                                <td style="text-align: right">
-                                    <a name="confirm-btn" id="confirm-btn" class="btn btn-primary" href="" role="button">Modifier</a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
                     <div class="d-grid gap-2">
-                      <button type="button" name="add-role-btn" id="add-role-btn" class="btn btn-primary">Ajouter role</button>
+                      <button type="button" name="add-role-btn" id="add-role-btn" class="btn btn-primary btn-sm">Ajouter role</button>
                     </div>
 
                     <hr>
 
                     <h4>Permissions</h4>
 
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th style="text-align: right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td scope="row">Ajouter livreur</td>
-                                <td style="text-align: right">
-                                    <a name="confirm-btn" id="confirm-btn" class="btn btn-primary" href="" role="button">Modifier</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td scope="row">Engager livreur</td>
-                                <td style="text-align: right">
-                                    <a name="confirm-btn" id="confirm-btn" class="btn btn-primary" href="" role="button">Modifier</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if ($permissions->count() > 0)
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th style="text-align: right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td scope="row">Ajouter livreur</td>
+                                    <td style="text-align: right">
+                                        <a name="confirm-btn" id="confirm-btn" class="btn btn-primary btn-sm" href="" role="button">Modifier</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @else
+                        <p>Il n'y pas encore de permissions. Ajoutez-en en utilisant le bouton ci-dessous.</p>
+                    @endif
+
 
                     <div class="d-grid gap-2">
-                      <button type="button" name="add-role-btn" id="add-role-btn" class="btn btn-primary">Ajouter permission</button>
+                      <button type="button" name="add-role-btn" id="add-role-btn" class="btn btn-primary btn-sm">Ajouter permission</button>
                     </div>
 
                 </div>
