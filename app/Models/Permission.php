@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Permission extends Model
 {
@@ -21,7 +22,7 @@ class Permission extends Model
      */
     public function getAllPermissions()
     {
-
+        return $this::all();
     }
 
     /**
@@ -31,7 +32,7 @@ class Permission extends Model
      */
     public function getPermission($id)
     {
-
+        return $this::findOrFail($id);
     }
 
     /**
@@ -40,7 +41,7 @@ class Permission extends Model
      */
     public function assignToRole(Role $role)
     {
-
+        $role->permisssions->attach($this->id);
     }
 
 
@@ -50,7 +51,7 @@ class Permission extends Model
      */
     public function retractFromRole(Role $role)
     {
-
+        $role->permisssions->detach($this->id);
     }
 
 
@@ -61,7 +62,9 @@ class Permission extends Model
      */
     public function createPermission(array $data)
     {
-
+        return $this->create([
+            'name' => $data['name'],
+        ]);
     }
 
     /**
@@ -69,7 +72,15 @@ class Permission extends Model
      */
     public function destroyPermission()
     {
+        $roles = $this->roles;
 
+        if ($roles->count() > 0) {
+            foreach ($roles as $role) {
+                $this->retractFromRole($role);
+            }
+        }
+
+        $this->forceDelete();
     }
 
     /**
@@ -87,7 +98,7 @@ class Permission extends Model
      */
     public function roles()
     {
-
+        $this->belongsToMany(Role::class, 'role_has_permission', 'permission_id', 'id');
     }
 
 }
