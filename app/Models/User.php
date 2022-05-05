@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function getAllUsers()
     {
-        return $this::all();
+        return $this::select()->orderBy('validated_at', 'ASC')->get();
     }
 
     public function createUser(array $data)
@@ -66,6 +66,29 @@ class User extends Authenticatable
         return true;
     }
 
+
+    /**
+     * Will validate a user
+     */
+    public function validateUser()
+    {
+        $this->update([
+            'validated_at' => now()
+        ]);
+    }
+
+    /**
+     * Will destroy a user and his store
+     */
+    public function destroyUser()
+    {
+
+    }
+
+    /**
+     * Will check if user is admin
+     * @return false|true
+     */
     public function userAdmin()
     {
         foreach ($this->roles as $role) {
@@ -76,11 +99,17 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * Fetch the store related to the user
+     */
     public function store()
     {
         return $this->hasOne(Store::class, 'user_id', 'id');
     }
 
+    /**
+     * Fetch the roles related to user
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_has_role', 'user_id', 'id');
