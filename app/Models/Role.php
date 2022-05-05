@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Role extends Model
 {
@@ -39,7 +40,7 @@ class Role extends Model
      * Will add a permission to the role
      * @param Permission $permission
      */
-    public function assignToRole(Permission $permission)
+    public function assignPermissionToRole(Permission $permission)
     {
         $permission->roles->attach($this->id);
     }
@@ -49,9 +50,21 @@ class Role extends Model
      * Will remove permission from role
      * @param Permission $permission
      */
-    public function retractFromRole(Permission $permission)
+    public function retractPermissionFromRole(Permission $permission)
     {
         $permission->roles->detach($this->id);
+    }
+
+    /**
+     * Will remove user from role
+     * @param User $user
+     * @param $role
+     */
+    public function retractUserFromRoles(User $user, $roles)
+    {
+        foreach ($roles as $role) {
+            DB::table('user_has_role')->where('user_id', '=', $user->id)->where('role_id', '=', $role->id)->delete();
+        }
     }
 
 
@@ -76,7 +89,7 @@ class Role extends Model
 
         if ($permissions->count() > 0) {
             foreach ($permissions as $permission) {
-                $this->retractFromRole($permission);
+                $this->retractPermissionFromRole($permission);
             }
         }
 
@@ -107,6 +120,6 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_has_role', 'role_id', 'id');
+        return $this->belongsToMany(User::class, 'user_has_role');
     }
 }
