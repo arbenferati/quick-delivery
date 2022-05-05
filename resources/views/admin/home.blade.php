@@ -3,7 +3,23 @@
 @section('content')
 
 <div class="container-fluid">
+    @if(session()->has('success'))
+
     <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        </div>
+    </div>
+
+    @endif
+    <div class="row justify-content-center">
+
+    </div>
+
+    <div class="row justify-content-center">
+
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Liste des derniers inscrits') }}</div>
@@ -34,10 +50,11 @@
                                     </td>
                                     <td style="text-align: right">
                                     @if($user->userValidated())
-                                        <button name="delete-btn" id="delete-btn" class="btn btn-danger btn-sm" role="button">Supprimer</button>
+                                        <button name="disable-user-btn" class="btn btn-warning btn-sm" onclick="confirmation('{{ route('disable-user', $user->id) }}', 'Vous êtes sur le point de désactiver cet utilisateur, continuer?');"role="button">Désactiver</button>
+                                        <button name="delete-btn" class="btn btn-danger btn-sm" onclick="confirmation('{{ route('delete-user', $user->id) }}', 'Voulez-vous vraiment supprimer cet utilisateurs?');" role="button">Supprimer</button>
                                     @else
-                                        <button name="confirm-btn" id="confirm-btn" class="btn btn-primary btn-sm" role="button">Confirmer</button>
-                                        <button name="cancel-btn" id="cancel-btn" class="btn btn-danger btn-sm" role="button">Refuser</button>
+                                    <button name="enable-user-btn" class="btn btn-primary btn-sm" onclick="confirmation('{{ route('enable-user', $user->id) }}', 'Vous êtes sur le point d\'accepter cet utilisateur, continuer?');"role="button">Activer</button>
+                                    <button name="delete-user-btn" class="btn btn-danger btn-sm" onclick="confirmation('{{ route('delete-user', $user->id) }}', 'Voulez-vous vraiment refuser cet utilisateurs?');" role="button">Supprimer</button>
                                     @endif
                                     </td>
                                 </tr>
@@ -49,6 +66,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">{{ __('Roles & permissions') }}</div>
@@ -116,4 +134,16 @@
     </div>
 </div>
 
+
+@endsection
+
+@section('scripts')
+<script>
+    function confirmation(link, msg) {
+        var z = confirm(msg);
+        if (z == true) {
+            location.href = link;
+        }
+    }
+</script>
 @endsection
