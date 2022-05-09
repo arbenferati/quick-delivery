@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'validated_at',
     ];
 
     /**
@@ -41,4 +43,94 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAllUsers()
+    {
+        return $this::select()->orderBy('validated_at', 'ASC')->get();
+    }
+
+    public function getUser($id)
+    {
+        return $this::findOrFail($id);
+    }
+
+    public function createUser(array $data)
+    {
+        return $this::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+    }
+
+    public function userValidated()
+    {
+        if ($this->validated_at === NULL) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Will validate a user
+     */
+    public function validateUser()
+    {
+        $this->update([
+            'validated_at' => now()
+        ]);
+    }
+
+    public function unvalidateUser()
+    {
+        $this->update([
+            'validated_at' => NULL
+        ]);
+    }
+
+    /**
+     * Will destroy a user and his store
+     */
+    public function destroyUser()
+    {
+        $store = $this->store;
+        $store->destroyStore();
+        $role = new Role();
+        $roles = $this->roles;
+
+        $role->retractUserFromRoles($this, $roles);
+
+        $this->forceDelete();
+    }
+
+    /**
+     * Will check if user is admin
+     * @return false|true
+     */
+    public function userAdmin()
+    {
+        foreach ($this->roles as $role) {
+            if ($role->name == 'admin') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Fetch the store related to the user
+     */
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'user_id', 'id');
+    }
+
+    /**
+     * Fetch the roles related to user
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_has_role');
+    }
 }
