@@ -30,6 +30,14 @@ class HomeController extends Controller
 
             return view('admin.home', compact('users', 'roles', 'permissions'));
         }
+
+        if (auth()->user() && auth()->user()->isSeller()) {
+
+            $products = auth()->user()->store->products;
+
+            return view('home', compact('products'));
+        }
+
         return view('home');
     }
 }
