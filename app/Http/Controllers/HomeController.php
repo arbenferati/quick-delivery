@@ -33,9 +33,12 @@ class HomeController extends Controller
 
         if (auth()->user() && auth()->user()->isSeller()) {
 
-            $products = auth()->user()->store->products;
+            $user = auth()->user();
+            $store = $user->store;
+            $products = $store->products;
+            $orders = $store->orders;
 
-            return view('home', compact('products'));
+            return view('home', compact('products', 'orders'));
         }
 
         return view('home');
