@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\Store;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -67,6 +67,11 @@ class RegisterController extends Controller
     {
         $user = new User();
         $user = $user->createUser($data);
+
+        $role = new Role();
+        $role = $role->getRoleByName('vendeur');
+
+        $role->assignToUser($user);
 
         $store = new Store();
         $store = $store->createStore($data, $user->id);

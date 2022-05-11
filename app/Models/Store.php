@@ -34,4 +34,17 @@ class Store extends Model
     {
         $this->forceDelete();
     }
+
+    /**
+     * Will return a list of products related to the store
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function trashedProducts()
+    {
+        return $this->hasMany(Product::class)->onlyTrashed();
+    }
 }

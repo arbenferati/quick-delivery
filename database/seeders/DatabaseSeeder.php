@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\Role;
 use App\Models\Store;
 use \App\Models\User;
@@ -27,8 +28,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password')
         ]);
 
-        User::factory(5)->create();
-        
+        $user = User::create([
+            'name' => 'Sam Sepiol',
+            'email' => 'ss@qd.com',
+            'password' => Hash::make('password')
+        ]);
+
+        $user->validated_at = now();
+        $user->save();
+
+        $user = null;
+
+        User::factory(2)->create();
+
         Role::create([
             'name' => 'admin'
         ]);
@@ -37,13 +49,26 @@ class DatabaseSeeder extends Seeder
             'name' => 'vendeur'
         ]);
 
-        
         DB::table('user_has_role')->insert([
             'user_id' => 1,
             'role_id' => 1,
         ]);
 
-        for ($i=2; $i <= 6 ; $i++) { 
+        DB::table('user_has_role')->insert([
+            'user_id' => 2,
+            'role_id' => 2,
+        ]);
+
+        Store::create([
+            'name' => 'Mr. Robot store',
+            'phone' => '+41 24 000 00 00',
+            'address' => 'Rue qwerty 3',
+            'zip' => '1050',
+            'city' => 'NY',
+            'user_id' => 2,
+        ]);
+
+        for ($i=3; $i <= 4 ; $i++) {
             Store::create([
                 'name' => Str::random(10),
                 'phone' => '+41 24 000 19 9' . $i,
@@ -52,6 +77,13 @@ class DatabaseSeeder extends Seeder
                 'city' => Str::random(6),
                 'user_id' => $i,
             ]);
+
+            for ($j=4; $j <= 5; $j++) {
+                Product::create([
+                    'name' => 'Produit N°' . $j - 3,
+                    'store_id' => $i - 1,
+                ]);
+            }
 
             DB::table('user_has_role')->insert([
                 'user_id' => $i,

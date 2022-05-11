@@ -119,11 +119,25 @@ class User extends Authenticatable
     }
 
     /**
+     * Will check if user is seller
+     * @return false|true
+     */
+    public function isSeller()
+    {
+        foreach ($this->roles as $role) {
+            if ($role->name == 'vendeur') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Fetch the store related to the user
      */
     public function store()
     {
-        return $this->hasOne(Store::class, 'user_id', 'id');
+        return $this->hasOne(Store::class);
     }
 
     /**
