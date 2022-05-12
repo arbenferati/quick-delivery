@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Sellers\OrderController;
 use App\Http\Controllers\Sellers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -32,4 +33,6 @@ Route::middleware('isSeller')->group(function(){
     Route::get('/delete-product-{id}', [ProductController::class, 'deleteProduct'])->name('delete-product');
     Route::get('/restore-product-{id}', [ProductController::class, 'restoreProduct'])->name('restore-product');
     Route::get('/deleted-products', [ProductController::class, 'deletedProducts'])->name('deleted-products');
+
+    Route::get('/order-{id}', [OrderController::class, 'show'])->name('show-order');
 });
