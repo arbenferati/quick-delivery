@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Store;
@@ -39,15 +40,18 @@ class DatabaseSeeder extends Seeder
 
         $user = null;
 
+        User::create([
+            'name' => 'Client',
+            'email' => 'c@qd.com',
+            'password' => Hash::make('password')
+        ]);
+
         User::factory(2)->create();
 
-        Role::create([
-            'name' => 'admin'
-        ]);
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'vendeur']);
+        Role::create(['name' => 'client']);
 
-        Role::create([
-            'name' => 'vendeur'
-        ]);
 
         DB::table('user_has_role')->insert([
             'user_id' => 1,
@@ -59,7 +63,12 @@ class DatabaseSeeder extends Seeder
             'role_id' => 2,
         ]);
 
-        Store::create([
+        DB::table('user_has_role')->insert([
+            'user_id' => 3,
+            'role_id' => 3,
+        ]);
+
+        $store = Store::create([
             'name' => 'Mr. Robot store',
             'phone' => '+41 24 000 00 00',
             'address' => 'Rue qwerty 3',
@@ -68,8 +77,19 @@ class DatabaseSeeder extends Seeder
             'user_id' => 2,
         ]);
 
-        for ($i=3; $i <= 4 ; $i++) {
-            Store::create([
+        $productData = array();
+
+        for ($i=1; $i < 11; $i++) {
+            $product = Product::create(['name' => 'Produit N°' . $i, 'store_id' => $store->id]);
+            array_push($productData, $product);
+        }
+
+        $order = new Order();
+        $order = $order->createOrder($productData, 3, $store->id);
+
+
+        for ($i=4; $i <= 5 ; $i++) {
+            $store = Store::create([
                 'name' => Str::random(10),
                 'phone' => '+41 24 000 19 9' . $i,
                 'address' => Str::random(13),
@@ -79,16 +99,11 @@ class DatabaseSeeder extends Seeder
             ]);
 
             for ($j=4; $j <= 5; $j++) {
-                Product::create([
-                    'name' => 'Produit N°' . $j - 3,
-                    'store_id' => $i - 1,
-                ]);
+                Product::create(['name' => 'Produit N°' . $j - 3, 'store_id' => $store->id]);
             }
 
-            DB::table('user_has_role')->insert([
-                'user_id' => $i,
-                'role_id' => 2,
-            ]);
+            DB::table('user_has_role')->insert([ 'user_id' => $i, 'role_id' => 2, ]);
+
         }
 
     }
