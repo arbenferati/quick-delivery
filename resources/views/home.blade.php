@@ -43,21 +43,19 @@
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Nom</th>
-                                    <th>Status</th>
+                                    <th>ID</th>
                                     <th style="text-align: right">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td scope="row">100</td>
-                                    <td>SmartTV Samsung SERIE9</td>
-                                    <td><span class="badge rounded-pill bg-warning">En attente de livraison</span></td>
-                                    <td style="text-align: right">
-                                        <a name="edit-btn" id="edit-btn" class="btn btn-primary" href="" role="button">Edit</a>
-                                        <a name="delete-btn" id="delete-btn" class="btn btn-danger" href="" role="button">Delete</a>
-                                    </td>
+                                    @foreach ($orders as $order)
+                                        <td><a href="{{ route('show-order', $order->id) }}">Commande N#{{ $order->id }}</a></td>
+                                        <td style="text-align: right">
+                                            <a name="edit-btn" id="edit-btn" class="btn btn-sm btn-primary" href="" role="button">Edit</a>
+                                            <a name="delete-btn" id="delete-btn" class="btn btn-sm btn-danger" href="" role="button">Delete</a>
+                                        </td>
+                                    @endforeach
                                 </tr>
                             </tbody>
                         </table>
