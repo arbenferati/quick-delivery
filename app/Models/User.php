@@ -63,6 +63,15 @@ class User extends Authenticatable
         ]);
     }
 
+    public function createCustomer(array $data)
+    {
+        $role = new Role();
+        $role = $role->getRoleByName('client');
+        $user = $this->createUser($data);
+        $role->assignToUser($user);
+        return $user;
+    }
+
     public function userValidated()
     {
         if ($this->validated_at === NULL) {
