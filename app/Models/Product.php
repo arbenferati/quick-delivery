@@ -51,4 +51,9 @@ class Product extends Model
     {
         return $this::withTrashed()->findOrFail($id);
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_has_product');
+    }
 }
