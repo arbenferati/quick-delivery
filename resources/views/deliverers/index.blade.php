@@ -69,45 +69,6 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    {{ __('En attente de confirmation de la part des livreurs') }}
-                </div>
-                <div class="card-body">
-                    <table class="table table-sm">
-                        <thead class="">
-                            <tr>
-                                <th>Nom</th>
-                                <th style="text-align: right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($storeDeliverers as $deliverer)
-                                @if (!$deliverer->confirmed($deliverer, Auth::user()->store))
-                                    <tr>
-                                        <td scope="row">{{ $deliverer->name }}</td>
-                                        <td style="text-align: right">
-                                            <button id="delete-btn"
-                                                    class="btn btn-sm btn-danger"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#confirmation-modal"
-                                                    onclick="confirmDialog(
-                                                        'Annuler requête de collaboration avec : {{ $deliverer->name }}',
-                                                        'Êtes-vous certain que vous voulez annuler cette requête ?',
-                                                        '{{ route('cancel-deliverer-request', $deliverer->id) }}'
-                                                        )">
-                                                Annuler demande
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
