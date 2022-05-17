@@ -34,12 +34,6 @@
             </div>
         @else
 
-        <div class="row justify-content-center mb-4">
-            <button id="add-deliverer-btn" class="btn btn-lg btn-dark" data-bs-toggle="modal" data-bs-target="#add-deliverer-modal">
-                {{ __('Engager un livreur') }}
-            </button>
-        </div>
-
         {{-- Orders section --}}
             <div class="col-md-6">
                 <div class="card">
