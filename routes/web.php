@@ -39,4 +39,5 @@ Route::middleware('isSeller')->group(function(){
 
     Route::get('/deliverers', [DelivererController::class, 'index'])->name(('index-deliverers'));
     Route::post('/add-deliverer', [DelivererController::class, 'addDeliverer'])->name('add-deliverer');
+    Route::post('/request-deliverer-to-hire', [DelivererController::class, 'requestToDeliverer'])->name('request-deliverer');
 });
