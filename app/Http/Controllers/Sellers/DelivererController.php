@@ -65,8 +65,9 @@ class DelivererController extends Controller
         $deliverer = $deliverer->getDeliverer($req->deliverer_id);
 
         $store->askCollab($deliverer);
+        $deliverer->acceptCollab($store);
 
-        return Redirect()->route('index-deliverers')->with('success', 'La demande de collaboration avec "' . $deliverer->name . '" a été effectué avec succès.');
+        return Redirect()->route('index-deliverers')->with('success', 'Vous venez d\'adopter "' . $deliverer->name . '". Félicitation!');
     }
 
 
