@@ -38,6 +38,8 @@ Route::middleware('isSeller')->group(function(){
     Route::get('/order-{id}', [OrderController::class, 'show'])->name('show-order');
 
     Route::get('/deliverers', [DelivererController::class, 'index'])->name(('index-deliverers'));
+    Route::get('/cancel-request-deliverer-{id}', [DelivererController::class, 'cancelRequestDeliverer'])->name('cancel-deliverer-request');
+    Route::get('/stop-collaboration-deliverer-{id}', [DelivererController::class, 'stopCollaborationWithDeliverer'])->name('stop-deliverer-collaboration');
     Route::post('/add-deliverer', [DelivererController::class, 'addDeliverer'])->name('add-deliverer');
     Route::post('/request-deliverer-to-hire', [DelivererController::class, 'requestToDeliverer'])->name('request-deliverer');
 });

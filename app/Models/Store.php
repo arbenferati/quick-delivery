@@ -36,10 +36,6 @@ class Store extends Model
         $this->forceDelete();
     }
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
 
 
     public function askCollab(Deliverer $deliverer)
@@ -59,6 +55,15 @@ class Store extends Model
         ]);
     }
 
+    public function destroyCollab(Deliverer $deliverer)
+    {
+        DB::table('store_has_deliverer')->where('user_id', $deliverer->id)->where('store_id', $this->id)->delete();
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
     /**
      * Will return a list of products related to the store
