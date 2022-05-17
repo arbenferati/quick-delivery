@@ -85,4 +85,12 @@ class Deliverer extends User
         ]);
     }
 
+    /**
+     * Will delete the collaboration with the store
+     */
+    public function destroyCollab(Store $store)
+    {
+        DB::table('store_has_deliverer')->where('user_id', $this->id)->where('store_id', $store->id)->delete();
+    }
+
 }
