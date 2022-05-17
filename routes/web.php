@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Sellers\DelivererController;
 use App\Http\Controllers\Sellers\OrderController;
 use App\Http\Controllers\Sellers\ProductController;
 use App\Http\Controllers\UserController;
