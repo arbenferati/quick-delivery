@@ -47,7 +47,17 @@
                                         <p class="card-text">
                                             {{ $deliverer->email }}
                                         </p>
-
+                                        <button id="delete-btn"
+                                                class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmation-modal"
+                                                onclick="confirmDialog(
+                                                    'Arrêter la collaboration avec {{ $deliverer->name }}',
+                                                    'Êtes-vous certain que vous voulez arrêter de travaillez avec ce livreur ?',
+                                                    '{{ route('stop-deliverer-collaboration', $deliverer->id) }}'
+                                                    )">
+                                            Stopper collaboration
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +88,17 @@
                                     <tr>
                                         <td scope="row">{{ $deliverer->name }}</td>
                                         <td style="text-align: right">
-
+                                            <button id="delete-btn"
+                                                    class="btn btn-sm btn-danger"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#confirmation-modal"
+                                                    onclick="confirmDialog(
+                                                        'Annuler requête de collaboration avec : {{ $deliverer->name }}',
+                                                        'Êtes-vous certain que vous voulez annuler cette requête ?',
+                                                        '{{ route('cancel-deliverer-request', $deliverer->id) }}'
+                                                        )">
+                                                Annuler demande
+                                            </button>
                                         </td>
                                     </tr>
                                 @endif
@@ -177,6 +197,32 @@
             </div>
         </div>
     {{-- End add modal --}}
+
+    {{-- Confirmation delete product modal --}}
+        <div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmation-modal-label"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmation-body-text"></p>
+                        <div class="row justify-content">
+                            <div class="col-6">
+                                <a name="confirmation-btn" id="confirmation-btn" class="btn btn-primary" href="">
+                                    {{ __('Confirmer') }}
+                                </a>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- End confirmation delete product modal --}}
 
 {{-- End modals --}}
 
