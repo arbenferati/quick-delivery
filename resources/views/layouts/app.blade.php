@@ -35,7 +35,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('home') }}">Page d'accueil</a>
+                        </li>
+                        @if (Auth::user() && Auth::user()->isSeller())
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ route('index-deliverers') }}">Gestion des livreurs</a>
+                            </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
