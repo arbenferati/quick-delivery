@@ -35,4 +35,7 @@ Route::middleware('isSeller')->group(function(){
     Route::get('/deleted-products', [ProductController::class, 'deletedProducts'])->name('deleted-products');
 
     Route::get('/order-{id}', [OrderController::class, 'show'])->name('show-order');
+
+    Route::get('/deliverers', [DelivererController::class, 'index'])->name(('index-deliverers'));
+    Route::post('/add-deliverer', [DelivererController::class, 'addDeliverer'])->name('add-deliverer');
 });
