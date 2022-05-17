@@ -16,9 +16,20 @@ class DelivererController extends Controller
     public function index()
     {
         $store = Auth::user()->store;
-        $storeDeliverers = $store->deliverers;
+        $deliverer = new Deliverer();
 
-        return view('deliverers.index', compact('storeDeliverers'));
+        $storeDeliverers = $store->deliverers;
+        $allDeliverers = $deliverer->getDeliverers();
+
+        foreach ($storeDeliverers as $deliverer) {
+            foreach ($allDeliverers as $key => $d) {
+                if ($deliverer->id == $d->id) {
+                    unset($allDeliverers[$key]);
+                }
+            }
+        }
+
+        return view('deliverers.index', compact('storeDeliverers', 'allDeliverers'));
     }
 
 
@@ -40,5 +51,21 @@ class DelivererController extends Controller
         $deliverer = $deliverer->createDeliverer($data, $store);
 
         return Redirect()->route('index-deliverers')->with('success', 'Vous venez d\'engager "' . $deliverer->name . '". Félicitation.');
+    }
+
+
+    /**
+     * This will handel a store request to work with a deliverer
+     */
+    public function requestToDeliverer(Request $req)
+    {
+        $deliverer = new Deliverer();
+        $store = Auth::user()->store;
+
+        $deliverer = $deliverer->getDeliverer($req->deliverer_id);
+
+        $store->askCollab($deliverer);
+
+        return Redirect()->route('index-deliverers')->with('success', 'La demande de collaboration avec "' . $deliverer->name . '" a été effectué avec succès.');
     }
 }
