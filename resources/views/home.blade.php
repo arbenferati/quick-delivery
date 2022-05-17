@@ -22,6 +22,7 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center">
+
         @if(!auth()->user()->userValidated())
             <div class="col-md-8">
                 <div class="alert alert-warning" role="alert">
@@ -32,6 +33,12 @@
                 </div>
             </div>
         @else
+
+        <div class="row justify-content-center mb-4">
+            <button id="add-deliverer-btn" class="btn btn-lg btn-dark" data-bs-toggle="modal" data-bs-target="#add-deliverer-modal">
+                {{ __('Engager un livreur') }}
+            </button>
+        </div>
 
         {{-- Orders section --}}
             <div class="col-md-6">
@@ -206,7 +213,48 @@
                         </div>
                     </div>
                 </div>
-            {{-- End edit modal --}}
+            {{-- End add modal --}}
+
+            {{-- Add deliverer modal --}}
+                <div class="modal fade" id="add-deliverer-modal" tabindex="-1" aria-labelledby="add-deliverer-modal-label" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="add-deliverer-modal-label">Engager un nouveau livreur</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" name="add-deliverer-form" id="add-deliverer-form" action="{{ route('add-deliverer') }}">
+                                @csrf
+                                    <div class="row mb-3">
+                                        <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Nom') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="add-deliverer-name" type="text" class="form-control" name="name" value="" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="add-deliverer-email" type="email" class="form-control" name="email" value="" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary">
+                                                {{ __('Confirmer') }}
+                                            </button>
+                                        </div>
+                                        <div class="col-6" style="text-align: right">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{-- End add modal --}}
 
             {{-- Confirmation delete product modal --}}
                 <div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal-label" aria-hidden="true">
