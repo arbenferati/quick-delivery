@@ -68,4 +68,30 @@ class DelivererController extends Controller
 
         return Redirect()->route('index-deliverers')->with('success', 'La demande de collaboration avec "' . $deliverer->name . '" a été effectué avec succès.');
     }
+
+
+
+    public function stopCollaborationWithDeliverer($id)
+    {
+        $deliverer = new Deliverer();
+        $store = Auth::user()->store;
+
+        $deliverer = $deliverer->getDeliverer($id);
+
+        $store->destroyCollab($deliverer);
+
+        return Redirect()->route('index-deliverers')->with('success', 'La demande d\'arrêt de collaboration avec "' . $deliverer->name . '" a été effectué avec succès.');
+    }
+
+
+    public function cancelRequestDeliverer($id)
+    {
+        $deliverer = new Deliverer();
+        $deliverer = $deliverer->getDeliverer($id);
+
+        $store = Auth::user()->store;
+        $store->destroyCollab($deliverer);
+
+        return Redirect()->route('index-deliverers')->with('success', 'Vous venez annuler la requête de collaboration avec "' . $deliverer->name . '".');
+    }
 }
