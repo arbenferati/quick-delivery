@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -19,18 +20,33 @@ class Product extends Model
 
     public function createProduct(array $data)
     {
+        if (Auth::user()) {
+            return $this::create([
+                'name' => $data['name'],
+                'store_id' => auth()->user()->store->id,
+            ]);
+        }
+
         return $this::create([
             'name' => $data['name'],
-            'store_id' => auth()->user()->store->id,
+            'store_id' => $data['store_id'],
         ]);
+
     }
 
     public function editProduct(array $data)
     {
-        $this->update([
-            'name' => $data['name'],
-            'store_id' => auth()->user()->store->id,
-        ]);
+        if (Auth::user()) {
+            $this->update([
+                'name' => $data['name'],
+                'store_id' => Auth::user()->store->id,
+            ]);
+        } else {
+            $this->update([
+                'name' => $data['name'],
+                'store_id' => $data['store_id'],
+            ]);
+        }
 
         $this->save();
 

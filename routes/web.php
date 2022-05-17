@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Sellers\DelivererController;
 use App\Http\Controllers\Sellers\OrderController;
 use App\Http\Controllers\Sellers\ProductController;
 use App\Http\Controllers\UserController;
@@ -35,4 +36,7 @@ Route::middleware('isSeller')->group(function(){
     Route::get('/deleted-products', [ProductController::class, 'deletedProducts'])->name('deleted-products');
 
     Route::get('/order-{id}', [OrderController::class, 'show'])->name('show-order');
+
+    Route::get('/deliverers', [DelivererController::class, 'index'])->name(('index-deliverers'));
+    Route::post('/add-deliverer', [DelivererController::class, 'addDeliverer'])->name('add-deliverer');
 });
