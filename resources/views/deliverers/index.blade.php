@@ -26,6 +26,10 @@
                         {{ __('Engager un livreur') }}
                     </button>
 
+                    <button id="hire-deliverer-btn" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#hire-deliverer-modal">
+                        {{ __('Adopter un livreur') }}
+                    </button>
+
                     <div class="row">
                     @foreach ($storeDeliverers as $deliverer)
                         @if ($deliverer->confirmed($deliverer, Auth::user()->store))
@@ -54,11 +58,42 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    {{ __('En attente de confirmation de la part des livreurs') }}
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead class="">
+                            <tr>
+                                <th>Nom</th>
+                                <th style="text-align: right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($storeDeliverers as $deliverer)
+                                @if (!$deliverer->confirmed($deliverer, Auth::user()->store))
+                                    <tr>
+                                        <td scope="row">{{ $deliverer->name }}</td>
+                                        <td style="text-align: right">
+
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 
 {{-- Modals --}}
+
     {{-- Add deliverer modal --}}
         <div class="modal fade" id="add-deliverer-modal" tabindex="-1" aria-labelledby="add-deliverer-modal-label" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -82,6 +117,49 @@
                                     <input id="add-deliverer-email" type="email" class="form-control" name="email" value="" required>
                                 </div>
                             </div>
+
+                            <div class="row justify-content">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Confirmer') }}
+                                    </button>
+                                </div>
+                                <div class="col-6" style="text-align: right">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- End add modal --}}
+
+    {{-- Hire deliverer modal --}}
+        <div class="modal fade" id="hire-deliverer-modal" tabindex="-1" aria-labelledby="hire-deliverer-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="hire-deliverer-modal-label">Engager un nouveau livreur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" name="hire-deliverer-form" id="hire-deliverer-form" action="{{ route('request-deliverer') }}">
+                        @csrf
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Livreur') }}</label>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <select class="form-select" name="deliverer_id" id="">
+                                            <option selected></option>
+                                            @foreach ($allDeliverers as $deliverer)
+                                                <option value="{{ $deliverer->id }}">{{ $deliverer->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <div class="row justify-content">
                                 <div class="col-6">

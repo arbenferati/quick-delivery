@@ -60,8 +60,10 @@ class DatabaseSeeder extends Seeder
             $role = $role->createRole(['name' => 'livreur']);
             $deliverer = $deliverer->createDeliverer(['name' => 'Dwight Schrut', 'email' => 'ds@qd.com', 'password' => 'password'], $store);
             $deliverer = $deliverer->createDeliverer(['name' => 'Jim Helpert', 'email' => 'jh@qd.com', 'password' => 'password'], $store);
+            $deliverer = $deliverer->createDeliverer(['name' => 'Pam Beesly', 'email' => 'bp@qd.com', 'password' => 'password']);
+            $deliverer = $deliverer->createDeliverer(['name' => 'Andy Bernard', 'email' => 'ab@qd.com', 'password' => 'password']);
             $deliverer = $deliverer->createDeliverer(['name' => 'Stanley Hudson', 'email' => 'sh@qd.com', 'password' => 'password']);
-            $deliverer->askCollab($store);
+            $store->askCollab($deliverer);
         /** Fin création livreurs et le role livreur */
     }
 }
