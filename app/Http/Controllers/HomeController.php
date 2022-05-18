@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderStatus;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -38,7 +39,10 @@ class HomeController extends Controller
             $products = $store->products;
             $orders = $store->orders;
 
-            return view('home', compact('products', 'orders'));
+            $orderStatus = new OrderStatus();
+            $status = $orderStatus->getAllStatuses();
+
+            return view('home', compact('products', 'orders', 'status'));
         }
 
         return view('home');
