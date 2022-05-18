@@ -36,6 +36,8 @@ Route::middleware('isSeller')->group(function(){
     Route::get('/deleted-products', [ProductController::class, 'deletedProducts'])->name('deleted-products');
 
     Route::get('/order-{id}', [OrderController::class, 'show'])->name('show-order');
+    Route::get('/cancel-order-{id}', [OrderController::class, 'cancelOrder'])->name('cancel-order');
+    Route::get('/update-order-{order_id}-status-{status_id}', [OrderController::class, 'updateStatus'])->name('update-order-status');
 
     Route::get('/deliverers', [DelivererController::class, 'index'])->name(('index-deliverers'));
     //Route::get('/cancel-request-deliverer-{id}', [DelivererController::class, 'cancelRequestDeliverer'])->name('cancel-deliverer-request');
