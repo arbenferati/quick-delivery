@@ -13,6 +13,7 @@ class Order extends Model
     protected $fillable = [
         'customer_id',
         'store_id',
+        'order_status_id'
     ];
 
 
@@ -37,9 +38,20 @@ class Order extends Model
         return $order;
     }
 
+    public function updateStatus(int $status_id)
+    {
+        $this->order_status_id = $status_id;
+        $this->save();
+    }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_has_product');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(OrderStatus::class, 'order_status_id', 'id');
     }
 
 }

@@ -36,8 +36,9 @@
 
         {{-- Orders section --}}
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">{{ __('Commandes en cours') }}</div>
+                @foreach ($status as $s)
+                <div class="card mb-4">
+                    <div class="card-header">Commandes : {{ $s->name }}</div>
 
                     <div class="card-body">
 
@@ -45,25 +46,92 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th style="text-align: right">Action</th>
+                                    <th style="text-align: right">Statut</th>
+                                    <th style="text-align: right; width: 25%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    @foreach ($orders as $order)
-                                        <td><a href="{{ route('show-order', $order->id) }}">Commande N#{{ $order->id }}</a></td>
-                                        <td style="text-align: right">
-                                            <a name="edit-btn" id="edit-btn" class="btn btn-sm btn-primary" href="" role="button">Edit</a>
-                                            <a name="delete-btn" id="delete-btn" class="btn btn-sm btn-danger" href="" role="button">Delete</a>
-                                        </td>
-                                    @endforeach
-                                </tr>
+                                @foreach ($orders as $order)
+                                    @if ($order->status->id == $s->id)
+                                        <tr style="vertical-align: center">
+                                            <td class="align-middle"><a href="{{ route('show-order', $order->id) }}">Commande N#{{ $order->id }}</a></td>
+                                            <td class="align-middle" style="text-align: right">
+                                                @switch($s->name)
+                                                    @case('En préparation')
+                                                        <span class="badge rounded-pill bg-warning">{{ $s->name }}</span>
+                                                        @break
+                                                    @case('Prête')
+                                                        <span class="badge rounded-pill bg-success">{{ $s->name }}</span>
+                                                        @break
+                                                    @case('Annulée')
+                                                        <span class="badge rounded-pill bg-danger">{{ $s->name }}</span>
+                                                        @break
+                                                    @default
+                                                        <span class="badge rounded-pill bg-dark">{{ $s->name }}</span>
+                                                @endswitch
+                                            </td>
+                                            <td class="align-middle" style="text-align: right">
+                                                @switch($s->name)
+                                                    @case('En préparation')
+                                                        <a style="color: white" class="btn btn-sm btn-success" href="{{ route('update-order-status', [$order->id, 3]) }}" role="button">Prête</a>
+                                                        <button type="button"
+                                                                name="cancel-order-btn"
+                                                                class="btn btn-sm btn-danger"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#confirmation-modal"
+                                                                onclick="confirmDialog(
+                                                                    'Annulation de commande.',
+                                                                    'Êtes-vous certain que vous voulez annulé cette commande ?',
+                                                                    '{{ route('cancel-order', $order->id) }}'
+                                                                    )">
+                                                                Annuler
+                                                        </button>
+                                                        @break
+                                                    @case('Prête')
+                                                        <a style="color: white" class="btn btn-sm btn-warning" href="{{ route('update-order-status', [$order->id, 2]) }}" role="button">Remettre en préparation</a>
+                                                        @break
+                                                    @case('Annulée')
+                                                        <button type="button"
+                                                                name="cancel-order-btn"
+                                                                class="btn btn-sm btn-dark"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#confirmation-modal"
+                                                                onclick="confirmDialog(
+                                                                    'Archiver commande.',
+                                                                    'Êtes-vous certain que vous voulez archiver cette commande ? Elle ne sera plus visible !',
+                                                                    '#'
+                                                                    )">
+                                                                Archiver
+                                                        </button>
+                                                        @break
+                                                    @default
+                                                        <a style="color: white" class="btn btn-sm btn-warning" href="{{ route('update-order-status', [$order->id, 2]) }}" role="button">En préparation</a>
+                                                        <button type="button"
+                                                                name="cancel-order-btn"
+                                                                class="btn btn-sm btn-danger"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#confirmation-modal"
+                                                                onclick="confirmDialog(
+                                                                    'Annulation de commande.',
+                                                                    'Êtes-vous certain que vous voulez annulé cette commande ?',
+                                                                    '{{ route('cancel-order', $order->id) }}'
+                                                                    )">
+                                                                Annuler
+                                                        </button>
+
+                                                @endswitch
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
 
                     </div>
                 </div>
+                @endforeach
             </div>
+
         {{-- End orders section --}}
 
         {{-- Product section --}}
