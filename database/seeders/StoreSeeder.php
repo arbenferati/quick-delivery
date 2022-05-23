@@ -16,13 +16,14 @@ class StoreSeeder extends Seeder
     public function run()
     {
         $store = new Store();
-        $store = $store->createStore([
-                    'store-name' => 'Mr. Robot store',
-                    'phone' => '+41 24 000 00 00',
-                    'address' => 'Rue qwerty 3',
-                    'zip' => '1050',
-                    'city' => 'NY'
-                ], 2);
+        $data = [
+            'store-name' => 'Mr. Robot store',
+            'phone' => '+41 24 000 00 00',
+            'address' => 'Rue qwerty 3',
+            'zip' => '1050',
+            'city' => 'NY'
+        ];
 
+        $store = $store->createStore($data, 2);
     }
 }

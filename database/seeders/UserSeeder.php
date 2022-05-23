@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
 
         // Creating a customer [id:3]
         $user = $user->createUser(['name' => 'Kelly Kapoor', 'email' => 'kk@qd.com', 'password' => 'password']);
-        $role = Role::find(3);
+        $role = Role::find(4);
         $role->assignToUser($user);
 
     }
