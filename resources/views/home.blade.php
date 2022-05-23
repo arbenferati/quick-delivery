@@ -88,18 +88,7 @@
                                                         </button>
                                                         @break
                                                     @case('Prête')
-                                                        <button type="button"
-                                                                name="cancel-order-btn"
-                                                                class="btn btn-sm btn-danger"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#confirmation-modal"
-                                                                onclick="confirmDialog(
-                                                                    'Annulation de commande.',
-                                                                    'Êtes-vous certain que vous voulez annulé cette commande ?',
-                                                                    '{{ route('cancel-order', $order->id) }}'
-                                                                    )">
-                                                                Annuler
-                                                        </button>
+                                                        <a style="color: white" class="btn btn-sm btn-warning" href="{{ route('update-order-status', [$order->id, 2]) }}" role="button">Remettre en préparation</a>
                                                         @break
                                                     @case('Annulée')
                                                         <button type="button"
@@ -116,7 +105,7 @@
                                                         </button>
                                                         @break
                                                     @default
-                                                        <a style="color: white" class="btn btn-sm btn-warning" href="{{ route('update-order-status', [$order->id, 2]) }}" role="button">Préparation</a>
+                                                        <a style="color: white" class="btn btn-sm btn-warning" href="{{ route('update-order-status', [$order->id, 2]) }}" role="button">En préparation</a>
                                                         <button type="button"
                                                                 name="cancel-order-btn"
                                                                 class="btn btn-sm btn-danger"
